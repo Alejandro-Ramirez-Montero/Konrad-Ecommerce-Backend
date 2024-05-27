@@ -3,6 +3,7 @@ package com.tericcabrel.authapi.dtos;
 public class ProductDto {
     private Long id;
     private String name;
+    private String path;
     private String description;
     private String image;
     private double price;
@@ -57,5 +58,13 @@ public class ProductDto {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

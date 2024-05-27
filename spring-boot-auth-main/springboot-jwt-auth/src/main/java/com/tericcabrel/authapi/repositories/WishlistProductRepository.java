@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface WishlistProductRepository extends JpaRepository<WishlistProduct, Long> {
-    @Modifying
-    @Query("DELETE FROM WishlistProduct wp WHERE wp.wishlist = :wishlist")
-    void deleteAllByWishlist(Wishlist wishlist);
-
-    @Modifying
-    @Query("DELETE FROM WishlistProduct wp WHERE wp.wishlist = :wishlist AND wp NOT IN :wishlistProducts")
-    void deleteNotInWishlist(Wishlist wishlist, List<WishlistProduct> wishlistProducts);
+//    @Modifying
+//    @Query("DELETE FROM WishlistProduct wp WHERE wp.wishlist = :wishlist")
+//    void deleteAllByWishlist(Wishlist wishlist);
+//
+//    @Modifying
+//    @Query("DELETE FROM WishlistProduct wp WHERE wp.wishlist = :wishlist AND wp NOT IN :wishlistProducts")
+//    void deleteNotInWishlist(Wishlist wishlist, List<WishlistProduct> wishlistProducts);
 }

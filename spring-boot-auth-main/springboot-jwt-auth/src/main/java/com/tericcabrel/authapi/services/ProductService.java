@@ -29,10 +29,15 @@ public class ProductService {
         return product.map(productEntity -> this.modelMapper.map(productEntity, ProductDto.class)).orElse(null);
     }
 
+    public ProductDto getProductByPath(String path) {
+        Optional<Product> product = this.productRepository.findByPath(path);
+        return product.map(productEntity -> this.modelMapper.map(productEntity, ProductDto.class)).orElse(null);
+    }
+
     public boolean createProduct(ProductDto productDto){
         List<Product> products = this.productRepository.findAll();
         if(products.stream().noneMatch(product -> product.getId().equals(productDto.getId()))){
-            this.productRepository.save(this.modelMapper.map(productDto, Product.class));
+            this.productRepository.saveAndFlush(this.modelMapper.map(productDto, Product.class));
             return true;
         }
         else{
@@ -45,11 +50,11 @@ public class ProductService {
         if(matchedProduct.isPresent()){
             Product productToEdit = matchedProduct.get();
             Product product = this.modelMapper.map(productDto, Product.class);
-            productToEdit.setName(product.getName());
-            productToEdit.setDescription(product.getDescription());
-            productToEdit.setImage(product.getImage());
-            productToEdit.setPrice(product.getPrice());
-            productToEdit.setCategory(product.getCategory());
+            productToEdit.setName(product.getName() != null? product.getName() : productToEdit.getName());
+            productToEdit.setDescription(product.getName() != null? product.getDescription() : productToEdit.getDescription());
+            productToEdit.setImage(product.getImage() != null? product.getImage() : productToEdit.getImage());
+            productToEdit.setPrice(product.getPrice() > 0? product.getPrice() : productToEdit.getPrice());
+            productToEdit.setCategory(product.getCategory() != null? product.getCategory() : productToEdit.getCategory());
             this.productRepository.save(productToEdit);
             return true;
         }

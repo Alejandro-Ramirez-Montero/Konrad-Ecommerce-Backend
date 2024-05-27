@@ -2,6 +2,9 @@ package com.tericcabrel.authapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ public class Wishlist {
     @JsonManagedReference
     private User user;
     @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<WishlistProduct> wishlistProducts;
 
     public Wishlist() {

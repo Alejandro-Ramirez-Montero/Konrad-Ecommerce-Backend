@@ -22,6 +22,18 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        ProductDto product = productService.getProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/getByPath/{path}")
+    public ResponseEntity<ProductDto> getProductByPath(@PathVariable String path) {
+        ProductDto product = productService.getProductByPath(path);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<Boolean> createProduct(@RequestBody ProductDto productDto) {
@@ -36,9 +48,9 @@ public class ProductController {
         return new ResponseEntity<>(operationSuccess, HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ResponseEntity<Boolean> deleteProduct(@RequestBody Long id) {
+    public ResponseEntity<Boolean> deleteProduct(@PathVariable Long id) {
         boolean operationSuccess = productService.deleteProduct(id);
         return new ResponseEntity<>(operationSuccess, HttpStatus.NO_CONTENT);
     }

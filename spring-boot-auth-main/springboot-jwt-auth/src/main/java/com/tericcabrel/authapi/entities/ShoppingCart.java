@@ -1,6 +1,8 @@
 package com.tericcabrel.authapi.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class ShoppingCart {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ShoppingCartProduct> shoppingCartProducts;
 
     public ShoppingCart() {

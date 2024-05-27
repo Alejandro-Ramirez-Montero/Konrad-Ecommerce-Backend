@@ -22,6 +22,13 @@ public class ShoppingCartController {
         return new ResponseEntity<>(shoppingCartDto, HttpStatus.OK);
     }
 
+    @GetMapping("/productInCart/{productId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Boolean> isProductAlreadyInCart(@PathVariable Long productId) {
+        boolean productInCart = shoppingCartService.isProductAlreadyInCart(productId);
+        return new ResponseEntity<>(productInCart, HttpStatus.OK);
+    }
+
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Boolean> addProductToCart(@RequestBody ShoppingCartProductDto shoppingCartProductDto) {
@@ -29,10 +36,17 @@ public class ShoppingCartController {
         return new ResponseEntity<>(operationSuccess, HttpStatus.CREATED);
     }
 
-    @PatchMapping
+    @PatchMapping("editProductQuantity")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Boolean> editProductQuantity(@RequestBody ShoppingCartProductDto shoppingCartProductDto) {
         boolean operationSuccess = shoppingCartService.editProductQuantity(shoppingCartProductDto);
+        return new ResponseEntity<>(operationSuccess, HttpStatus.OK);
+    }
+
+    @PatchMapping("addProductQuantity")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Boolean> addProductQuantity(@RequestBody ShoppingCartProductDto shoppingCartProductDto) {
+        boolean operationSuccess = shoppingCartService.addProductQuantity(shoppingCartProductDto);
         return new ResponseEntity<>(operationSuccess, HttpStatus.OK);
     }
 
@@ -48,5 +62,19 @@ public class ShoppingCartController {
     public ResponseEntity<Boolean> clearShoppingCart() {
         boolean operationSuccess = shoppingCartService.clearShoppingCart();
         return new ResponseEntity<>(operationSuccess, HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("addWishlistToCart")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Boolean> addWishlistToCart() {
+        boolean operationSuccess = shoppingCartService.addWishlistToCart();
+        return new ResponseEntity<>(operationSuccess, HttpStatus.CREATED);
+    }
+
+    @GetMapping("getTotal")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Double> getCartTotal() {
+        double total = shoppingCartService.getShoppingCartTotal();
+        return new ResponseEntity<>(total, HttpStatus.CREATED);
     }
 }

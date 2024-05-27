@@ -13,6 +13,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(unique = true, length = 100, nullable = false)
+    private String path;
+    @Column(length = 1000)
     private String description;
     private String image;
     private double price;
@@ -20,7 +23,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<WishlistProduct> wishlistProducts;
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ShoppingCartProduct> shoppingCartProducts;
 
@@ -90,5 +93,13 @@ public class Product {
 
     public void setWishlistProducts(List<WishlistProduct> wishlistProducts) {
         this.wishlistProducts = wishlistProducts;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

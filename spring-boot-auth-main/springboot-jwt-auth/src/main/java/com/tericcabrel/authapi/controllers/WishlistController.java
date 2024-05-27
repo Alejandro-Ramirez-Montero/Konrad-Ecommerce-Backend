@@ -22,6 +22,13 @@ public class WishlistController {
         return new ResponseEntity<>(wishlistDto, HttpStatus.OK);
     }
 
+    @GetMapping("/productInWishlist/{productId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Boolean> isProductAlreadyInWishlist(@PathVariable Long productId) {
+        boolean productInWishlist = wishlistService.isProductAlreadyInWishlist(productId);
+        return new ResponseEntity<>(productInWishlist, HttpStatus.OK);
+    }
+
     @PostMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Boolean> addProductToWishlist(@RequestBody WishlistProductDto wishlistProductDto) {
