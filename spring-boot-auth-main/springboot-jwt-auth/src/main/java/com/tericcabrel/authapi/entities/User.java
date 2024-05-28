@@ -52,6 +52,10 @@ public class User implements UserDetails {
     @JsonBackReference
     private Wishlist wishlist;
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @JsonBackReference
+    private List<Orders> orders;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
@@ -172,6 +176,14 @@ public class User implements UserDetails {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public List<Orders> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Orders> orders) {
+        this.orders = orders;
     }
 }
 

@@ -2,10 +2,7 @@ package com.tericcabrel.authapi.services;
 
 import com.tericcabrel.authapi.dtos.*;
 import com.tericcabrel.authapi.entities.*;
-import com.tericcabrel.authapi.repositories.ProductRepository;
-import com.tericcabrel.authapi.repositories.ShoppingCartProductRepository;
-import com.tericcabrel.authapi.repositories.ShoppingCartRepository;
-import com.tericcabrel.authapi.repositories.WishlistRepository;
+import com.tericcabrel.authapi.repositories.*;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +23,12 @@ public class ShoppingCartService {
     @Autowired
     private WishlistRepository wishlistRepository;
     @Autowired
+    private WishlistProductRepository wishlistProductRepository;
+    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private ProductService productService;
-    @Autowired
-    private WishlistService wishlistService;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -153,8 +151,7 @@ public class ShoppingCartService {
         if(shoppingCart.isPresent()){
             ShoppingCart cart = shoppingCart.get();
             cart.getShoppingCartProducts().clear();
-            shoppingCartRepository.save(cart);
-            return true;
+            shoppingCartRepository.saveAndFlush(cart);
         }
         return false;
     }
@@ -189,6 +186,7 @@ public class ShoppingCartService {
             }
             this.shoppingCartRepository.saveAndFlush(shoppingCart.get());
             //this.wishlistService.clearWishlist();
+            this.wishlistProductRepository.deleteAllByWishlist(wishlist.get());
             return true;
         }
         return false;
@@ -208,8 +206,8 @@ public class ShoppingCartService {
             }
             double shippingPrice = 5;
             double taxes = 0.13;
-            double totalTax = BigDecimal.valueOf(total).multiply(BigDecimal.valueOf(0.13)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-            total += shippingPrice + totalTax;
+            double totalTax = total * taxes;
+            total = BigDecimal.valueOf(total).add(BigDecimal.valueOf(totalTax)).add(BigDecimal.valueOf(shippingPrice)).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
 
         return total;

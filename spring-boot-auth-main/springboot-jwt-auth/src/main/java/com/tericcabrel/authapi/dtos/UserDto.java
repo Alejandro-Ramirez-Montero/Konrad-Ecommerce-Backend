@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class UserDto {
     private Integer id;
+    private String fullName;
     private String email;
     private String password;
     private Date createdAt;
@@ -61,5 +62,13 @@ public class UserDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

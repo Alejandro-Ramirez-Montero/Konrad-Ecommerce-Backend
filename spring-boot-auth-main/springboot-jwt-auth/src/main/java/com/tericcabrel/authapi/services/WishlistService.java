@@ -178,9 +178,15 @@ public class WishlistService {
         if(wishlist.isPresent()){
             Optional<WishlistProduct> matchedWishlistProduct =  wishlist.get().getWishlistProducts().stream().filter(wishlistProductEntity -> wishlistProductEntity.getProduct().getId().equals(wishlistProductDto.getProduct().getId())).findFirst();
             if(matchedWishlistProduct.isPresent()){
-                Wishlist list = wishlist.get();
+                Optional<WishlistProduct> product = this.wishlistProductRepository.findById(matchedWishlistProduct.get().getId());
+                this.wishlistProductRepository.delete(product.get());
+
+                //Wishlist list = wishlist.get();
                 //list.getWishlistProducts().remove(matchedWishlistProduct.get());
                 //wishlistRepository.save(list);
+                    //this.wishlistProductRepository.deleteAllByWishlist(list);
+                    this.wishlistProductRepository.deleteById(matchedWishlistProduct.get().getId());
+
                 //WishlistProduct wishlistProductToDelete = entityManager.find(WishlistProduct.class, matchedWishlistProduct.get().getId());
                 //entityManager.remove(wishlistProductToDelete);
                 //list.getWishlistProducts().remove(matchedWishlistProduct.get());
@@ -197,8 +203,11 @@ public class WishlistService {
 
         Optional<Wishlist> wishlist = this.wishlistRepository.findByUserId(currentUser.getId());
         if(wishlist.isPresent()){
-            Wishlist wishlist1 = wishlist.get();
-            wishlist1.getWishlistProducts().clear();
+            //Wishlist wishlist1 = wishlist.get();
+            //wishlist1.getWishlistProducts().clear();
+
+            this.wishlistProductRepository.deleteAllByWishlist(wishlist.get());
+
 //            wishlistRepository.saveAndFlush(wishlist1);
 //            wishlistProductRepository.deleteAllByWishlist(wishlist1);
             return true;

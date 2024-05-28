@@ -17,8 +17,7 @@ public class Wishlist {
     @OneToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
     private User user;
-    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<WishlistProduct> wishlistProducts;
 
     public Wishlist() {
