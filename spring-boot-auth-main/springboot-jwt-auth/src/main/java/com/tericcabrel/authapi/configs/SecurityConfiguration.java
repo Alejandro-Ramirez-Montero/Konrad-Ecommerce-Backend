@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers(new AntPathRequestMatcher("/auth/**", "POST")).permitAll() // Allow POST requests to /user without authentication
+                        .requestMatchers(new AntPathRequestMatcher("/api/product/**", "GET")).permitAll()
                         .anyRequest().authenticated() // Ensures all requests are authenticated.
                 )
                 .sessionManagement(session -> session
