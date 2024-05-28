@@ -73,6 +73,7 @@ public class OrdersService {
         Optional<Orders> order = this.ordersRepository.findById(ordersDto.getId());
         if(order.isPresent()){
             order.get().setStatus(ordersDto.getStatus());
+            this.ordersRepository.save(order.get());
             return true;
         }
         return false;
